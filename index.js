@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app=express();
 const port=process.env.PORT ||5000;
 
@@ -34,8 +34,13 @@ async function run() {
       res.send(result)
 
     })
+    app.get('/myCard/:email', async (req,res)=>{
+      // console.log(req.params.email);
+      const result = await spotCollection.find({email:req.params.email}).toArray();
+      res.send(result)
+    })
 
-    app.post('/spot', async(req,res)=>{
+    app.post('/addSpot', async(req,res)=>{
       const newSpot =req.body;
       console.log(newSpot)
       const result = await spotCollection.insertOne(newSpot);
@@ -43,6 +48,24 @@ async function run() {
 
     })
 
+    app.get("/viewDetail/:id", async(req,res)=>{
+      const result = await spotCollection.findOne({_id:new ObjectId(req.params.id),
+      })
+      res.send(result)
+    })
+    app.delete("/delete/:id", async (req,res)=>{
+      const id =req.params.id;
+      console.log(id);
+      // const query ={ _id: new ObjectId(id)}
+      const result = await spotCollection.deleteOne({_id: new ObjectId(req.params.id),
+      })
+      console.log(result)
+      res.send(result);
+    })
+   
+   
+    
+     
 
 
     // Send a ping to confirm a successful connection
