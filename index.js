@@ -47,6 +47,29 @@ async function run() {
       res.send(result);
 
     })
+    app.put("/update/:id", async (req,res)=>{
+      const id =req.params.id;
+      const filter ={_id:new ObjectId(id)}
+      const option ={upsert:true};
+      const updateSport= req.body;
+      const spot ={
+        $set:{
+          image :updateSport.image,
+          tourists_spot_name:updateSport.tourists_spot_name,
+        
+         country_Name:updateSport.country_Name,
+          location:updateSport.location ,
+          description:updateSport.description,
+          average_cost:updateSport.average_cost,
+          seasonality:updateSport.seasonality,
+          travel_time:updateSport.travel_time,
+             
+          totalVisitorsPerYer:updateSport.totalVisitorsPerYer
+        }
+      }
+      result = await spotCollection.updateOne(filter,spot,option)
+     res.send(result)
+    })
 
     app.get("/viewDetail/:id", async(req,res)=>{
       const result = await spotCollection.findOne({_id:new ObjectId(req.params.id),
