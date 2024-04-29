@@ -86,10 +86,6 @@ async function run() {
       res.send(result);
     })
    
-   
-    
-     
-
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -100,9 +96,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
-
-
 
 
 app.get('/',(req,res)=>{
